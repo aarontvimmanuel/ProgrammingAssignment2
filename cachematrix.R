@@ -1,32 +1,63 @@
-## Put comments here that give an overall description of what your
-## functions do
+# makeCacheMatrix function creates a matrix that can cache its inverse and
+# produces a list containing 4 functions:
+# set, get, setinverse, getinverse
+# Using the matrix returned by makeCacheMatrix function, we calculate
+# its inverse using cacheSolve function
 
-## Write a short comment describing this function
+# makeCacheMatrix function creates a matrix that can cache its inverse
 
 makeCacheMatrix <- function(x = matrix()) {
-    inverse <- NULL
-    set <- function(y) {
-    x <<- y
-    inverse <<- NULL
+ inverse <- NULL
+
+ # set function to set the value of matrix
+ set <- function(y) {
+ x <<- y
+ inverse <<- NULL
  }
- get <- function() x
- setinverse <- function(solve) inverse <<- solve
- getinverse <- function() inverse
+
+ # get function to get the value of matrix
+ get <- function() {
+ x
+ }
+ 
+ # setinverse function to set the value of matrix inverse
+ setinverse <- function(solve) {
+ inverse <<- solve
+ }
+ 
+ # getinverse function to get the value of matrix inverse
+ getinverse <- function() {
+ inverse
+ }
+ 
+ # output list containing 4 functions: set, get, setinverse, getinverse
  list(set = set, get = get, setinverse = setinverse, getinverse = getinverse)
 }
 
-
-## Write a short comment describing this function
+# cacheSolve function computes the inverse of matrix
+# returned by makeCacheMatrix function
 
 cacheSolve <- function(x, ...) {
-           inverse <- x$getinverse()
-           if(!is.null(inverse)) {
-           message("Getting Cached Data!")
-           return(inverse)
-}
+
+ # get the value of matrix inverse and assign it to 'inverse' object
+ inverse <- x$getinverse()
+
+ # check if inverse was already calculated and matrix has not changed
+ if(!is.null(inverse)) {
+ message("Getting Cached Data!")
+ return(inverse)
+ }
+
+ # if inverse is not calculated, store the input matrix 'x' in 'data' object
  data <- x$get()
+ 
+ # calculate the inverse of 'data' using solve function in R
+ # and store the result in 'inverse'
  inverse <- solve(data, ...)
+ 
+ # set the value of matrix inverse
  x$setinverse(inverse)
+ 
+ # print the output matrix that is the inverse of input matrix 'x'
  inverse
-        ## Return a matrix that is the inverse of 'x'
 }
